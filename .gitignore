@@ -1,0 +1,92 @@
+# =========================
+# Ambiente virtual
+# =========================
+venv/
+.venv/
+env/
+ENV/
+
+# =========================
+# Cache Python
+# =========================
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+
+# =========================
+# Logs
+# =========================
+*.log
+logs/
+log/
+
+# =========================
+# Selenium / WebBot
+# =========================
+downloads/
+screenshots/
+prints/
+reports/
+output/
+tmp/
+temp/
+
+# =========================
+# Arquivos de sessão / profile do navegador
+# =========================
+chrome_profile/
+firefox_profile/
+browser_profile/
+
+# =========================
+# Configurações locais / segredos
+# =========================
+.env
+.env.*
+*.env
+config.local.*
+secrets.*
+credentials.*
+*.key
+*.pem
+
+# =========================
+# IDEs / Editores
+# =========================
+.vscode/
+.idea/
+*.iml
+
+# =========================
+# Sistema operacional
+# =========================
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# =========================
+# Build / Distribuição
+# =========================
+build/
+dist/
+*.egg-info/
+
+# =========================
+# Testes / Coverage
+# =========================
+.pytest_cache/
+.coverage
+htmlcov/
+
+# =========================
+# Jupyter (se usar)
+# =========================
+.ipynb_checkpoints/
+
+# =========================
+# Drivers Selenium (opcional)
+# =========================
+chromedriver*
+geckodriver*
+msedgedriver*
