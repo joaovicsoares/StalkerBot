@@ -21,12 +21,20 @@ Please refer to the documentation for more information at
 https://documentation.botcity.dev/tutorials/python-automations/web/
 """
 
-
 # Import for the Web Bot
 from botcity.web import WebBot, Browser, By
 
 # Import for integration with BotCity Maestro SDK
 from botcity.maestro import *
+from dotenv import load_dotenv
+
+# from selenium import webdriver
+# from selenium.webdriver.common.by import By
+# from selenium.webdriver.support.ui import WebDriverWait
+# from selenium.webdriver.support import expected_conditions as EC
+
+import os
+import random
 
 # Disable errors if we are not connected to Maestro
 BotMaestroSDK.RAISE_NOT_CONNECTED = False
@@ -49,17 +57,59 @@ def main():
 
     # Uncomment to change the default Browser to Firefox
     bot.browser = Browser.FIREFOX
+    # driver = webdriver.Firefox()
 
     # Uncomment to set the WebDriver path
     bot.driver_path = "browser_driver\geckodriver.exe"
-
+    load_dotenv()
+    profile = os.getenv("PROFILE")
+    account = os.getenv("ACCOUNT")
+    password = os.getenv("PASSWORD")
     # Opens the BotCity website.
-    bot.browse("https://www.botcity.dev")
+    bot.browse(f"https://www.instagram.com/{profile}")
+
+    bot.wait(10000)
+    bot.tab()
+    bot.wait(random.randint(1500, 5000))
+    bot.tab()
+    bot.wait(random.randint(1500, 5000))
+    bot.enter()
+
+    # for _ in range(3):
+    #     bot.wait(random.randint(1500, 5000))
+    #     bot.tab()
+    
+    # bot.wait(random.randint(1500, 5000))
+    # bot.enter()
+    bot.wait(random.randint(1500, 5000))
+    bot.type_keys(account)
+
+    bot.tab()
+    bot.type_keys(password)
+
+    bot.tab()
+    bot.tab()
+    bot.enter()
+
+    bot.wait(10000)
+
+    element = bot.find_element(selector='//div[@role="button" and contains(text(), "Agora não")]', by=By.XPATH)
+    element.click()
+
+    bot.wait(random.randint(1500, 5000))
+    bot.browse(f"https://www.instagram.com/{profile}")
+
+  
+
+
+
+    
 
     # Implement here your logic...
     ...
 
     # Wait 3 seconds before closing
+    input()
     bot.wait(3000)
 
     # Finish and clean up the Web Browser
