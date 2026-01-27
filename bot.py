@@ -99,8 +99,27 @@ def main():
     bot.wait(random.randint(1500, 5000))
     bot.browse(f"https://www.instagram.com/{profile}")
 
-  
+    bot.wait(7000)
 
+    for _ in range(18):
+        bot.wait(random.randint(200, 1000))
+        bot.tab()
+    bot.wait(random.randint(200, 1000))
+    bot.enter()
+    # element = bot.find_element(selector=f"//a[@role='link' and @href='/{profile}/followers/']", by=By.XPATH)
+    # driver.execute_script("arguments[0].scrollIntoView({block: 'center'});", element)
+    # driver.execute_script("arguments[0].click();", element)
+    bot.wait(5000)
+    container = bot.find_element(selector="//div[@role='dialog']", by=By.XPATH)
+    lista = container.find_element(by=By.XPATH, value=".//div[contains(@style, 'display: flex') and contains(@style, 'flex-direction: column')]")
+    filhos = lista.find_elements(by=By.XPATH, value=".//a[@role='link']")
+
+    # bot.scroll_element(element=lista, steps=200)
+
+    # print("teste")
+    # print(filhos)
+    # for filho in filhos:
+    #     print(filho.get_attribute('href'))
 
 
     
