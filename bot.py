@@ -60,28 +60,57 @@ def main():
     # driver = webdriver.Firefox()
 
     # Uncomment to set the WebDriver path
-    bot.driver_path = "browser_driver\geckodriver.exe"
+    bot.driver_path = r"browser_driver\geckodriver.exe"
     load_dotenv()
     profile = os.getenv("PROFILE")
     account = os.getenv("ACCOUNT")
     password = os.getenv("PASSWORD")
-    # Opens the BotCity website.
-    bot.browse(f"https://www.instagram.com/{profile}")
+ 
+    def BuscarSeguidores():
+        for _ in range(15):
+            bot.wait(random.randint(200, 1000))
+            bot.tab()
 
+        bot.wait(random.randint(200, 1000))
+        bot.enter()
+        # element = bot.find_element(selector=f"//a[@role='link' and @href='/{profile}/followers/']", by=By.XPATH)
+        # driver.execute_script("arguments[0].scrollIntoView({block: 'center'});", element)
+        # driver.execute_script("arguments[0].click();", element)
+        bot.wait(5000)
+        container = bot.find_element(selector="//div[@role='dialog']", by=By.XPATH)
+        lista = container.find_element(by=By.XPATH, value=".//div[contains(@style, 'display: flex') and contains(@style, 'flex-direction: column')]")
+
+        filhos = lista.find_elements(by=By.XPATH, value=".//a[@role='link']")
+
+        divScroll = container.find_element(by=By.XPATH, value="./div[1]/div[2]/div[1]/div[1]/div[3]")
+        while True:
+            quantidadeSeguidores = len(filhos)
+            bot.scroll_element(divScroll, 100, 1000)
+            bot.wait(5000)
+            bot.scroll_element(divScroll, 100, 1000)
+            bot.wait(5000)
+
+            filhos = lista.find_elements(by=By.XPATH, value=".//a[@role='link']")
+
+            if len(filhos) == quantidadeSeguidores:
+                break
+
+        print("teste")
+        print(filhos)
+        listaSeguidores = []
+        anterior = ''
+        for filho in filhos:
+            if filho.get_attribute('href') != anterior:
+                listaSeguidores.append(filho.get_attribute('href'))
+                anterior = filho.get_attribute('href')
+                print(filho.get_attribute('href'))
+        print(len(listaSeguidores))
+
+
+
+    bot.browse(f"https://www.instagram.com/")
     bot.wait(10000)
-    bot.tab()
-    bot.wait(random.randint(1500, 5000))
-    bot.tab()
-    bot.wait(random.randint(1500, 5000))
-    bot.enter()
 
-    # for _ in range(3):
-    #     bot.wait(random.randint(1500, 5000))
-    #     bot.tab()
-    
-    # bot.wait(random.randint(1500, 5000))
-    # bot.enter()
-    bot.wait(random.randint(1500, 5000))
     bot.type_keys(account)
 
     bot.tab()
@@ -91,38 +120,41 @@ def main():
     bot.tab()
     bot.enter()
 
-    bot.wait(10000)
+    confirmaLogin = bot.find_element(selector='//span[contains(text(), "Continuar")]', by=By.XPATH)
+    if confirmaLogin != None:
+        confirmaLogin.click()
+        bot.wait(2000)
+        bot.type_keys(password)
+        bot.tab()
+        bot.tab()
+        bot.enter()
 
-    element = bot.find_element(selector='//div[@role="button" and contains(text(), "Agora não")]', by=By.XPATH)
-    element.click()
+    # bot.tab()
+    # bot.wait(random.randint(1500, 5000))
+    # bot.tab()
+    # bot.wait(random.randint(1500, 5000))
+    # bot.enter()
+
+    # for _ in range(3):
+    #     bot.wait(random.randint(1500, 5000))
+    #     bot.tab()
+    
+    # bot.wait(random.randint(1500, 5000))
+    # bot.enter()
+    # bot.wait(random.randint(1500, 5000))
+    
+
+    bot.wait(10000)
+    # element = bot.find_element(selector='//div[@role="button" and contains(text(), "Agora não")]', by=By.XPATH)
+    # element.click()
 
     bot.wait(random.randint(1500, 5000))
     bot.browse(f"https://www.instagram.com/{profile}")
 
     bot.wait(7000)
 
-    for _ in range(18):
-        bot.wait(random.randint(200, 1000))
-        bot.tab()
-    bot.wait(random.randint(200, 1000))
-    bot.enter()
-    # element = bot.find_element(selector=f"//a[@role='link' and @href='/{profile}/followers/']", by=By.XPATH)
-    # driver.execute_script("arguments[0].scrollIntoView({block: 'center'});", element)
-    # driver.execute_script("arguments[0].click();", element)
-    bot.wait(5000)
-    container = bot.find_element(selector="//div[@role='dialog']", by=By.XPATH)
-    lista = container.find_element(by=By.XPATH, value=".//div[contains(@style, 'display: flex') and contains(@style, 'flex-direction: column')]")
-    filhos = lista.find_elements(by=By.XPATH, value=".//a[@role='link']")
+    BuscarSeguidores()
 
-    # bot.scroll_element(element=lista, steps=200)
-
-    # print("teste")
-    # print(filhos)
-    # for filho in filhos:
-    #     print(filho.get_attribute('href'))
-
-
-    
 
     # Implement here your logic...
     ...
