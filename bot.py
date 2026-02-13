@@ -106,28 +106,28 @@ def main():
                 print(filho.get_attribute('href'))
         print(len(listaSeguidores))
 
+    def FazerLogin():
+        bot.browse(f"https://www.instagram.com/")
+        bot.wait(10000)
 
+        bot.type_keys(account)
 
-    bot.browse(f"https://www.instagram.com/")
-    bot.wait(10000)
-
-    bot.type_keys(account)
-
-    bot.tab()
-    bot.type_keys(password)
-
-    bot.tab()
-    bot.tab()
-    bot.enter()
-
-    confirmaLogin = bot.find_element(selector='//span[contains(text(), "Continuar")]', by=By.XPATH)
-    if confirmaLogin != None:
-        confirmaLogin.click()
-        bot.wait(2000)
+        bot.tab()
         bot.type_keys(password)
+
         bot.tab()
         bot.tab()
         bot.enter()
+
+        confirmaLogin = bot.find_element(selector='//span[contains(text(), "Continuar")]', by=By.XPATH)
+        if confirmaLogin != None:
+            confirmaLogin.click()
+            bot.wait(2000)
+            bot.type_keys(password)
+            bot.tab()
+            bot.tab()
+            bot.enter()
+    
 
     # bot.tab()
     # bot.wait(random.randint(1500, 5000))
@@ -143,7 +143,8 @@ def main():
     # bot.enter()
     # bot.wait(random.randint(1500, 5000))
     
-
+    FazerLogin()
+    
     bot.wait(10000)
     # element = bot.find_element(selector='//div[@role="button" and contains(text(), "Agora não")]', by=By.XPATH)
     # element.click()
