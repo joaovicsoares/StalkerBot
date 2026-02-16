@@ -20,7 +20,7 @@ def main():
         context = browser.new_context()
         page = context.new_page()
 
-        def handle_response(response):
+        def intercepta_seguidores(response):
             nonlocal seguidores, next_max_id
 
             if "friendships" in response.url and "followers" in response.url:
@@ -43,30 +43,30 @@ def main():
             page.wait_for_timeout(random.randint(1000,5000))
             page.locator("input[type='password'][name='pass']").fill(PASSWORD)
             page.wait_for_timeout(random.randint(1000,5000))
-            input()
             page.get_by_role("button", name="Entrar", exact=True).click()
 
             page.wait_for_timeout(8000)
 
-        page.on("response", handle_response)
         Login()
 
         page.goto(f"https://www.instagram.com/{PROFILE}")
         page.wait_for_timeout(5000)
 
+        page.on("response", intercepta_seguidores)
+
         page.locator(f"a[href='/{PROFILE}/followers/']").click()
         page.wait_for_timeout(5000)
 
-       
         modal = page.locator("div[role='dialog']")
+        divScroll = modal.locator(":scope > div:nth-child(1) > div:nth-child(2) > div:nth-child(1) > div:nth-child(1) > div:nth-child(3)")
 
         last_height = 0
 
         while True:
-            modal.evaluate("(el) => el.scrollTop = el.scrollHeight")
-            page.wait_for_timeout(3000)
+            divScroll.evaluate("(el) => el.scrollTop = el.scrollHeight")
+            page.wait_for_timeout(random.randint(2000,5000))
 
-            height = modal.evaluate("(el) => el.scrollHeight")
+            height = divScroll.evaluate("(el) => el.scrollHeight")
 
             if height == last_height:
                 break
@@ -74,10 +74,8 @@ def main():
             last_height = height
 
         print(f"\nTotal capturado via API: {len(seguidores)}")
-
-        
-        if next_max_id:
-            user_id = seguidores[0]["pk"] if seguidores else None
+        for seguidor in seguidores:
+            print (seguidor["username"])
 
         input("Pressione ENTER para sair...")
 
