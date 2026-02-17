@@ -90,3 +90,6 @@ htmlcov/
 chromedriver*
 geckodriver*
 msedgedriver*
+
+*.xlsx
+*.xls

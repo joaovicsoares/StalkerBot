@@ -86,7 +86,8 @@ def main():
         for seguidor in seguidores:
             print (seguidor["username"])
 
-        
+        df = pd.DataFrame(seguidores, columns=["username"])
+        df.to_excel("seguidores.xlsx", index=False)
 
         print(f"\nTotal capturado via API: {len(seguidores)}")
 
