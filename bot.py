@@ -52,9 +52,7 @@ def main():
                 page.locator("input[type='password'][name='pass']").fill(PASSWORD)
                 page.wait_for_timeout(random.randint(1000,5000))
                 page.get_by_text("Entrar").click()
-                input()
-
-            page.wait_for_timeout(8000)
+                page.wait_for_timeout(8000)
 
         Login()
 
