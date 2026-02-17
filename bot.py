@@ -1,6 +1,7 @@
 import os
 import json
 import random
+import pandas as pd
 from dotenv import load_dotenv
 from playwright.sync_api import sync_playwright
 
@@ -44,6 +45,14 @@ def main():
             page.locator("input[type='password'][name='pass']").fill(PASSWORD)
             page.wait_for_timeout(random.randint(1000,5000))
             page.get_by_role("button", name="Entrar", exact=True).click()
+            page.wait_for_timeout(8000)
+            continuar = page.locator("div[role='button'][aria-label='Continuar']")
+            if continuar.count() > 0:
+                continuar.click()
+                page.locator("input[type='password'][name='pass']").fill(PASSWORD)
+                page.wait_for_timeout(random.randint(1000,5000))
+                page.get_by_text("Entrar").click()
+                input()
 
             page.wait_for_timeout(8000)
 
@@ -73,9 +82,13 @@ def main():
 
             last_height = height
 
-        print(f"\nTotal capturado via API: {len(seguidores)}")
+        
         for seguidor in seguidores:
             print (seguidor["username"])
+
+        
+
+        print(f"\nTotal capturado via API: {len(seguidores)}")
 
         input("Pressione ENTER para sair...")
 
