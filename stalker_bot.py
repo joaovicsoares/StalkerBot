@@ -16,13 +16,17 @@ class StalkerBot:
         self.page = self.browser.new_page()
 
     def _confirmaLogin(self):
-        continuar = self.page.locator("div[role='button'][aria-label='Continuar']")
-        if continuar.count() > 0:
-            continuar.click()
-            self.page.locator("input[type='password'][name='pass']").fill(self.password)
-            self.page.wait_for_timeout(random.randint(1000,5000))
-            self.page.get_by_text("Entrar").click()
-            self.page.wait_for_timeout(8000)
+        confirmar = True
+        while confirmar:
+            confirmar = False
+            continuar = self.page.locator("div[role='button'][aria-label='Continuar']")
+            if continuar.count() > 0:
+                confirmar = True
+                continuar.click()
+                self.page.locator("input[type='password'][name='pass']").fill(self.password)
+                self.page.wait_for_timeout(random.randint(1000,5000))
+                self.page.get_by_text("Entrar").click()
+                self.page.wait_for_timeout(8000)
 
     def login(self):
         self.page.goto("https://www.instagram.com/")
