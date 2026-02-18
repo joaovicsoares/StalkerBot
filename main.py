@@ -15,7 +15,7 @@ def main():
     for seguidor in seguidores:
         print (seguidor["username"])
 
-    processaDados.salvaXls(seguidores)
+    processaDados.salvaXls(seguidores, Config.PROFILE)
 
     print(f"\nTotal capturado via API: {len(seguidores)}")
 
