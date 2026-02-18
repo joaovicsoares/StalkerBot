@@ -1,5 +1,4 @@
-
-import pandas as pd
+from processa_dados import ProcessaDados
 from config import Config
 from stalker_bot import StalkerBot
 
@@ -7,16 +6,16 @@ from stalker_bot import StalkerBot
 
 
 def main():
+    processaDados = ProcessaDados()
     bot = StalkerBot(Config.ACCOUNT, Config.PASSWORD)
     bot.start()
     bot.login()
-    seguidores = bot.BuscaSeguidores()
+    seguidores = bot.BuscaSeguidores(Config.PROFILE)
     
     for seguidor in seguidores:
         print (seguidor["username"])
 
-    df = pd.DataFrame(seguidores, columns=["username"])
-    df.to_excel("seguidores.xlsx", index=False)
+    processaDados.salvaXls(seguidores)
 
     print(f"\nTotal capturado via API: {len(seguidores)}")
 
