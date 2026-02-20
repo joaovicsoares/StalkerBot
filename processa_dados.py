@@ -17,3 +17,19 @@ class ProcessaDados:
             return df["username"].tolist()
         else:
             return []
+
+    def comparaSeguidores(self, seguidoresAntigos, seguidoresNovos):
+        setAntigos = set(seguidoresAntigos)
+        setNovos = set()
+        for seguidor in seguidoresNovos:
+            setNovos.add(seguidor["username"])
+        print(len(setAntigos))
+        print(len(setNovos))
+        
+        novosSeguidores = list(setNovos - setAntigos)
+        deixaramDeSeguir = list(setAntigos - setNovos)
+        
+        return {
+            "novos_seguidores": novosSeguidores,
+            "deixaram_de_seguir": deixaramDeSeguir
+        }
