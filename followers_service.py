@@ -2,7 +2,7 @@ class FollowersService:
     def __init__(self, page):
         self.page = page
         self.seguidores = []
-        self.usernames_vistos = set()
+        self.usernamesVistos = set()
 
     def _coleta_seguidores(self, response):
         if "friendships" in response.url and "followers" in response.url:
@@ -12,8 +12,8 @@ class FollowersService:
                     users = data.get("users", [])
                     for user in users:
                         username = user.get("username")
-                        if username and username not in self.usernames_vistos:
-                            self.usernames_vistos.add(username)
+                        if username and username not in self.usernamesVistos:
+                            self.usernamesVistos.add(username)
                             self.seguidores.append(user)
                 except Exception:
                     pass
