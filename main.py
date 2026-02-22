@@ -1,11 +1,14 @@
 from processa_dados import ProcessaDados
 from config import Config
 from stalker_bot import StalkerBot
+from notification_service import NotificationService
 
 
 
 
 def main():
+    notificacao = NotificationService(Config.DISCORD_WEBHOOK_URL)
+    notificacao.notificar_inicio(Config.PROFILE)
     processaDados = ProcessaDados()
     bot = StalkerBot(Config.ACCOUNT, Config.PASSWORD)
     bot.start()
