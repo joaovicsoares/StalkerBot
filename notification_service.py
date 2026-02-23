@@ -6,6 +6,9 @@ class NotificationService:
         self.webhookUrl = webhookUrl
     
     def enviar_notificacao(self, titulo, mensagem, cor=None):
+        """
+        cores: success, error, warning, info
+        """
         cores = {
         'success': 0x00ff00,  
         'error': 0xff0000,    
