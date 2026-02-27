@@ -2,6 +2,7 @@ class FollowersService:
     def __init__(self, page):
         self.page = page
         self.seguidores = []
+        self.seguindo = []
         self.usernamesVistos = set()
 
     def _coleta_seguidores(self, response):
@@ -28,7 +29,7 @@ class FollowersService:
                         username = user.get("username")
                         if username and username not in self.usernamesVistos:
                             self.usernamesVistos.add(username)
-                            self.seguidores.append(user)
+                            self.seguindo.append(user)
                 except Exception:
                     pass
 
@@ -40,3 +41,6 @@ class FollowersService:
 
     def get_seguidores(self):
         return self.seguidores
+
+    def get_seguindo(self):
+        return self.seguindo
