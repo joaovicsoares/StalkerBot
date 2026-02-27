@@ -13,8 +13,8 @@ def main():
     bot = StalkerBot(Config.ACCOUNT, Config.PASSWORD)
     bot.start()
     bot.login()
+    seguindo = bot.BuscaSeguindo(Config.PROFILE)
     seguidores = bot.BuscaSeguidores(Config.PROFILE)
-    
     for seguidor in seguidores:
         print (seguidor["username"])
 
@@ -31,8 +31,6 @@ def main():
     print(f"\nTotal capturado via API: {len(seguidores)}")
     print(f"\nnovos seguidores:{seguidoresDiferentes['novos_seguidores']}")
     print(f"\nparou de seguir:{seguidoresDiferentes['deixaram_de_seguir']}")
-
-    input("Pressione ENTER para sair...")
 
 
 

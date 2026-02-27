@@ -44,7 +44,6 @@ class StalkerBot:
         followersService = FollowersService(self.page)
         followersService.inicia_coleta("seguidores")
         self.page.goto(f"https://www.instagram.com/{profile}")
-        input()
         self.page.wait_for_timeout(5000)
         
         totalEsperado = None
@@ -121,7 +120,85 @@ class StalkerBot:
             print(f"Esperado: {totalEsperado} | Capturado: {len(seguidores)} | Faltam: {totalEsperado - len(seguidores)}")
         return seguidores
 
+    def BuscaSeguindo(self, profile):
+        followersService = FollowersService(self.page)
+        followersService.inicia_coleta("seguindo")
+        self.page.goto(f"https://www.instagram.com/{profile}")
+        self.page.wait_for_timeout(5000)
         
+        totalEsperado = None
+        try:
+            followingLink = self.page.locator(f"a[href='/{profile}/following/']")
+            if followingLink.locator("span").count() > 0:
+                followingText = followingLink.locator("span").first.inner_text()
+            
+            numeros = re.findall(r'\d+', followingText.replace(".", "").replace(",", ""))
+            if numeros:
+                totalEsperado = int(numeros[0])
+                print(f"Total de seguindo no perfil: {totalEsperado}")
+        except Exception as e:
+            print(f"Não foi possível obter o total de seguindo: {e}")
+
+        maxTentativasModal = 10
+        tentativaModal = 0
+        tentativasSemNovos = 0
+
+        while tentativaModal < maxTentativasModal:
+            tentativaModal += 1
+            seguindoAntes = len(followersService.get_seguindo())
+            print(f"\n=== Abrindo modal - Tentativa {tentativaModal}/{maxTentativasModal} ===")
+            print(f"Seguindo únicos até agora: {seguindoAntes}")
+            
+
+            self.page.locator(f"a[href='/{profile}/following/']").click()
+            self.page.wait_for_timeout(5000)
+            modal = self.page.locator("div[role='dialog']")
+            divScroll = modal.locator(":scope > div:nth-child(1) > div:nth-child(2) > div:nth-child(1) > div:nth-child(1) > div:nth-child(3)")
+            
+            lastHeight = 0
+            while True:
+                divScroll.evaluate("(el) => el.scrollTop = el.scrollHeight")
+                self.page.wait_for_timeout(random.randint(2000,5000))
+                height = divScroll.evaluate("(el) => el.scrollHeight")
+                if height == lastHeight:
+                    self.page.wait_for_timeout(random.randint(5000,10000))
+                    divScroll.evaluate("(el) => el.scrollTop = el.scrollHeight")
+                    height = divScroll.evaluate("(el) => el.scrollHeight")
+                    if height == lastHeight:
+                        break
+                lastHeight = height
+            
+
+            self.page.keyboard.press("Escape")
+            self.page.wait_for_timeout(random.randint(2000,5000))
+
+            
+            seguindoDepois = len(followersService.get_seguindo())
+            novosNestaTentativa = seguindoDepois - seguindoAntes
+            print(f"Novos seguindo capturados: {novosNestaTentativa}")
+            print(f"Total de seguindo únicos: {seguindoDepois}")
+            
+
+            if novosNestaTentativa == 0:
+                tentativasSemNovos += 1
+            else:
+                tentativasSemNovos = 0
+            
+            if totalEsperado and seguindoDepois >= totalEsperado:
+                print(f"\n✓ Todos os {totalEsperado} seguindo foram capturados!")
+                break
+            
+            if tentativasSemNovos >= 3:
+                print(f"\nNenhum seguindo novo nas últimas {tentativasSemNovos} tentativas. Encerrando...")
+                break
+        
+        seguindo = followersService.get_seguindo()
+        print(f"\n=== RESULTADO FINAL ===")
+        print(f"Total de seguindo únicos capturados: {len(seguindo)}")
+        if totalEsperado:
+            print(f"Esperado: {totalEsperado} | Capturado: {len(seguindo)} | Faltam: {totalEsperado - len(seguindo)}")
+        return seguindo
+
 
     def stop(self):
         self.browser.close()
