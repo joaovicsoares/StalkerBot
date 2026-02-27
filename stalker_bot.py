@@ -42,8 +42,9 @@ class StalkerBot:
 
     def BuscaSeguidores(self, profile):
         followersService = FollowersService(self.page)
-        followersService.inicia_coleta()
+        followersService.inicia_coleta("seguidores")
         self.page.goto(f"https://www.instagram.com/{profile}")
+        input()
         self.page.wait_for_timeout(5000)
         
         totalEsperado = None
@@ -119,6 +120,8 @@ class StalkerBot:
         if totalEsperado:
             print(f"Esperado: {totalEsperado} | Capturado: {len(seguidores)} | Faltam: {totalEsperado - len(seguidores)}")
         return seguidores
+
+        
 
     def stop(self):
         self.browser.close()
