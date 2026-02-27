@@ -15,14 +15,11 @@ def main():
     bot.login()
     seguindo = bot.BuscaSeguindo(Config.PROFILE)
     seguidores = bot.BuscaSeguidores(Config.PROFILE)
-    for seguidor in seguidores:
-        print (seguidor["username"])
 
-    seguidoresAntigos = processaDados.recuperaXls(Config.PROFILE)
-
+    seguidoresAntigos = processaDados.recuperaXls("seguidores", Config.PROFILE)
     seguidoresDiferentes = processaDados.comparaSeguidores(seguidoresAntigos, seguidores)
-
-    processaDados.salvaXls(seguidores, Config.PROFILE)
+    processaDados.salvaXls("seguidores", seguidores, Config.PROFILE)
+    naoSegue, naoSigo = processaDados.comparaSeguindoSeguidores(seguidores, seguindo)
 
     notificacao.enviar_notificacao("fim execução", f"Total capturado via API: {len(seguidores)}", "success")
     notificacao.enviar_notificacao("fim execução", f"novos seguidores:{seguidoresDiferentes['novos_seguidores']}", "success")
@@ -31,6 +28,10 @@ def main():
     print(f"\nTotal capturado via API: {len(seguidores)}")
     print(f"\nnovos seguidores:{seguidoresDiferentes['novos_seguidores']}")
     print(f"\nparou de seguir:{seguidoresDiferentes['deixaram_de_seguir']}")
+    print(f"\nnao segue:{len(naoSegue)}")
+    print(f"\nnao segue:{naoSegue}")
+    print(f"\nnao sigo:{len(naoSigo)}")
+    print(f"\nnao sigo:{naoSigo}")
 
 
 

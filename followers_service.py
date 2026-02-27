@@ -15,7 +15,7 @@ class FollowersService:
                         username = user.get("username")
                         if username and username not in self.usernamesVistos:
                             self.usernamesVistos.add(username)
-                            self.seguidores.append(user)
+                            self.seguidores.append(user["username"])
                 except Exception:
                     pass
 
@@ -29,7 +29,7 @@ class FollowersService:
                         username = user.get("username")
                         if username and username not in self.usernamesVistos:
                             self.usernamesVistos.add(username)
-                            self.seguindo.append(user)
+                            self.seguindo.append(user["username"])
                 except Exception:
                     pass
 
