@@ -33,3 +33,10 @@ class ProcessaDados:
             "novos_seguidores": novosSeguidores,
             "deixaram_de_seguir": deixaramDeSeguir
         }
+
+    def comparaSeguindoSeguidores(self, seguidores, seguindo):
+        setSeguidores = set(seguidores)
+        setSeguindo = set(seguindo)
+        naoSegue = list(setSeguindo - setSeguidores)
+        
+        return naoSegue
